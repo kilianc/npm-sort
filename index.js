@@ -2,19 +2,20 @@
 
 var writeFileSync = require('fs').writeFileSync
 
-module.exports = function sortDeps() {
-  var packagejson = require('../package.json')
+function sortDeps() {
+  var cwd = process.cwd()
+  var pkg = require(cwd + '/package.json')
 
   console.log(' > Sorting dependencies...')
-  packagejson.devDependencies = sortObject(packagejson.devDependencies)
-  console.log(JSON.stringify(packagejson.dependencies, null, '  '))
+  pkg.dependencies = sortObject(pkg.dependencies)
+  console.log(JSON.stringify(pkg.dependencies, null, '  '))
 
   console.log(' > Sorting devDependencies...')
-  packagejson.dependencies = sortObject(packagejson.dependencies)
-  console.log(JSON.stringify(packagejson.devDependencies, null, '  '))
+  pkg.devDependencies = sortObject(pkg.devDependencies)
+  console.log(JSON.stringify(pkg.devDependencies, null, '  '))
 
   console.log(' > Writing package.json...')
-  writeFileSync('./package.json', JSON.stringify(packagejson, null, '  '))
+  writeFileSync('./package.json', JSON.stringify(pkg, null, '  '))
 
   console.log(' > Done')
 }
@@ -32,3 +33,5 @@ function sortObject(obj) {
 
   return out
 }
+
+sortDeps()
