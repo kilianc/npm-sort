@@ -6,13 +6,23 @@ function sortDeps() {
   var cwd = process.cwd()
   var pkg = require(cwd + '/package.json')
 
-  console.log(' > Sorting dependencies...')
-  pkg.dependencies = sortObject(pkg.dependencies)
-  console.log(JSON.stringify(pkg.dependencies, null, '  '))
+  if (pkg.dependencies) {
+    console.log(' > Sorting dependencies...')
+    pkg.dependencies = sortObject(pkg.dependencies)
+    console.log(JSON.stringify(pkg.dependencies, null, '  '))
+  }
+  
+  if (pkg.devDependencies) {
+    console.log(' > Sorting devDependencies...')
+    pkg.devDependencies = sortObject(pkg.devDependencies)
+    console.log(JSON.stringify(pkg.devDependencies, null, '  '))
+  }
 
-  console.log(' > Sorting devDependencies...')
-  pkg.devDependencies = sortObject(pkg.devDependencies)
-  console.log(JSON.stringify(pkg.devDependencies, null, '  '))
+  if (pkg.optionalDependencies) {
+    console.log(' > Sorting optionalDependencies...')
+    pkg.optionalDependencies = sortObject(pkg.optionalDependencies)
+    console.log(JSON.stringify(pkg.optionalDependencies, null, '  '))
+  }
 
   console.log(' > Writing package.json...')
   writeFileSync(cwd + '/package.json', JSON.stringify(pkg, null, '  '))
