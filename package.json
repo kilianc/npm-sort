@@ -1,5 +1,5 @@
 {
-  "name": "npm-add",
+  "name": "npm-sort",
   "version": "0.0.2",
   "description": "npm install and sort deps",
   "main": "index.js",
