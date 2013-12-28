@@ -15,7 +15,7 @@ function sortDeps() {
   console.log(JSON.stringify(pkg.devDependencies, null, '  '))
 
   console.log(' > Writing package.json...')
-  writeFileSync('./package.json', JSON.stringify(pkg, null, '  '))
+  writeFileSync(cwd + '/package.json', JSON.stringify(pkg, null, '  '))
 
   console.log(' > Done')
 }
