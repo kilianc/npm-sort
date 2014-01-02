@@ -1,6 +1,6 @@
 {
   "name": "npm-sort",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "npm install and sort deps",
   "main": "index.js",
   "bin": {
