@@ -11,11 +11,10 @@
 
 function sortObject(obj) {
   var out = Object.create(null)
-  var keys = Object.keys(obj).sort(function (a, b) {
-    return a.toLowerCase().localeCompare(b.toLowerCase())
-  })
 
-  keys.forEach(function (key) {
+  Object.keys(obj).sort(function (a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase())
+  }).forEach(function (key) {
     out[key] = obj[key]
   })
 
