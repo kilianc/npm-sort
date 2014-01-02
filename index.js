@@ -1,17 +1,38 @@
 #!/usr/bin/env node
 
-var writeFileSync = require('fs').writeFileSync
+'use strict';
 
-function sortDeps() {
-  var cwd = process.cwd()
-  var pkg = require(cwd + '/package.json')
+/**
+ * Sorts object keys ~alphabetically
+ *
+ * @param  {Object} obj The object to be sorted
+ * @return {Object}     An sorted copy of `obj`
+ */
+
+function sortObject(obj) {
+  var out = Object.create(null)
+  var keys = Object.keys(obj).sort(function (a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase())
+  })
+
+  keys.forEach(function (key) {
+    out[key] = obj[key]
+  })
+
+  return out
+}
+
+(function () {
+  var save = require('fs').writeFileSync
+  var pkgPath = process.cwd() + '/package.json'
+  var pkg = require(pkgPath)
 
   if (pkg.dependencies) {
     console.log(' > Sorting dependencies...')
     pkg.dependencies = sortObject(pkg.dependencies)
     console.log(JSON.stringify(pkg.dependencies, null, '  '))
   }
-  
+
   if (pkg.devDependencies) {
     console.log(' > Sorting devDependencies...')
     pkg.devDependencies = sortObject(pkg.devDependencies)
@@ -25,23 +46,7 @@ function sortDeps() {
   }
 
   console.log(' > Writing package.json...')
-  writeFileSync(cwd + '/package.json', JSON.stringify(pkg, null, '  '))
+  save(pkgPath, JSON.stringify(pkg, null, '  '))
 
   console.log(' > Done')
-}
-
-function sortObject(obj) {
-  var out = Object.create(null)
-  var keys = Object.keys(obj).sort(function (a, b) {
-    return (a[0] === b[0]) && (a.length < b.length ? -1 : 1)
-           || (a[0].toLowerCase() < b[0].toLowerCase() ? -1 : 1)
-  })
-
-  keys.forEach(function (key) {
-    out[key] = obj[key]
-  })
-
-  return out
-}
-
-sortDeps()
+})()
