@@ -25,24 +25,26 @@ function sortObject(obj) {
   var save = require('fs').writeFileSync
   var pkgPath = process.cwd() + '/package.json'
   var pkg = require(pkgPath)
+  var objDepKinds = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'];
+  var arrDepKinds = ['bundledDependencies', 'bundleDependencies'];
 
-  if (pkg.dependencies) {
-    console.log(' > Sorting dependencies...')
-    pkg.dependencies = sortObject(pkg.dependencies)
-    console.log(JSON.stringify(pkg.dependencies, null, '  '))
-  }
+  objDepKinds.forEach(function (depKind) {
+    if (pkg[depKind]) {
+      console.log(' > Sorting '+depKind+'...')
+      pkg[depKind] = sortObject(pkg[depKind])
+      console.log(JSON.stringify(pkg[depKind], null, '  '))
+    }
+  })
 
-  if (pkg.devDependencies) {
-    console.log(' > Sorting devDependencies...')
-    pkg.devDependencies = sortObject(pkg.devDependencies)
-    console.log(JSON.stringify(pkg.devDependencies, null, '  '))
-  }
-
-  if (pkg.optionalDependencies) {
-    console.log(' > Sorting optionalDependencies...')
-    pkg.optionalDependencies = sortObject(pkg.optionalDependencies)
-    console.log(JSON.stringify(pkg.optionalDependencies, null, '  '))
-  }
+  arrDepKinds.forEach(function (depKind) {
+    if (pkg[depKind]) {
+      console.log(' > Sorting '+depKind+'...')
+      pkg[depKind].sort(depKind, (function (a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase())
+      }))
+      console.log(JSON.stringify(pkg[depKind], null, '  '))
+    }
+  })
 
   console.log(' > Writing package.json...')
   save(pkgPath, JSON.stringify(pkg, null, '  '))
